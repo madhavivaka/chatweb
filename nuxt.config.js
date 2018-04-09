@@ -18,7 +18,8 @@ module.exports = {
     '@nuxtjs/axios',
   ],
   plugins: [
-    '@/plugins/vue-socket.io'
+    '@/plugins/vue-socket.io',
+    '@/plugins/element-ui'
   ],
 
   /*
