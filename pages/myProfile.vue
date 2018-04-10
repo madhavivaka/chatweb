@@ -5,7 +5,7 @@
     Welcome madhavi
     <ul id="onlineUsers" >
         <li v-for="user in onlineUsers" :key="user.id" >
-       <a @click="sendUserId(user._id)"> {{ user }}</a> 
+       <a @click="sendUserId(user._id)"> {{ user }} <span v-if="userIsTyping(user)" class="glyphicon glyphicon-pencil" >..</span></a> 
         </li>
     </ul>
     
@@ -15,7 +15,7 @@
     
     
    <form class="form-sendmsg" @submit.prevent="sendMessage()">
-   <textarea  v-model="message.text" type="text" id="message" class="form-control" placeholder="Type your message here" required autofocus />
+   <textarea  v-model="message.text" v-on:keyup="usersAreTyping" type="text" id="message" class="form-control" placeholder="Type your message here" required autofocus />
     <button class="btn btn-lg btn-primary btn-block" type="submit" >Send</button>
     </form>
   </div>
