@@ -15,7 +15,7 @@
     
     
    <form class="form-sendmsg" @submit.prevent="sendMessage()">
-   <textarea  v-model="message.text" v-on:keyup="usersAreTyping" type="text" id="message" class="form-control" placeholder="Type your message here" required autofocus />
+   <textarea  v-model="message.text" v-on:keyup="usersAreTyping" v-on:keyup.13="stoppedTyping('13')" type="text" id="message" class="form-control" placeholder="Type your message here" required autofocus />
     <button class="btn btn-lg btn-primary btn-block" type="submit" >Send</button>
     </form>
   </div>

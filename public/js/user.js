@@ -16,7 +16,14 @@ export default {
       } = await this.$axios.post('/api/userLogin',{uname:this.email,password:this.password})
         if (data) {
             console.log('loginData',data);
-            // this.$router.push("/myProfile");
+             var user={
+              username:this.email,
+              id:data.data._id
+             }
+            this.$store.commit('SET_USER', user);
+
+             this.$socket.emit('user joined',user);
+             this.$router.push("/myProfile");
 	       }
     }
   }

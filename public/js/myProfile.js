@@ -22,19 +22,15 @@ export default {
   },
   created: function(){
        //if server emits user joined,update online users array
-       this.$socket.on('user joined',function(socketId){
-        console.log('user joined client',socketId);
-        this.$axios.post('/api/getOnlineUsers').then(function(response){
-          console.log('users response',response.data.data);
-          for(var i in response.data.data){
-            //if(this.onlineUsers.indexOf(response.data[i].username) <= -1){
-              console.log('username',response.data.data[i].username)
-               //this.onlineUsers.push(response.data.data[i].username);
-            //}
-          }
-        }.bind(this));
+       this.$socket.on('user joined',function(user){
+        console.log('user joined client',user);
+
+            if(this.onlineUsers[user.username] == undefined){
+               console.log('inside if');
+               this.onlineUsers.push(user.username);
+            }
          
-        this.onlineUsers.push(socketId);
+      
        }.bind(this));
 
 
@@ -45,45 +41,31 @@ export default {
        }.bind(this));
 
        //if server broadcasts user left, remove leaving user from online users
-       this.$socket.on('user left',function(socketId){
-        console.log('user left client',socketId);
+       this.$socket.on('user left',function(user){
+        console.log('user left client',user);
          console.log('this.onlineusers',this.onlineUsers);
-           var index=this.onlineUsers.indexOf(socketId);
+           var index=this.onlineUsers.indexOf(user.username);
            if(index >= 0){
               this.onlineUsers.splice(index,1);
            }
        }.bind(this));
+
+        this.$socket.on('user typing',function(username){
+           this.areTyping.push(username);
+        }.bind(this));
   },
   methods: {
-    async getOnlineUsers(){
-      console.log('*&&&&&&&&&&&&&&&&&');
-       const {
-        data
-      } = await this.$axios.post('/api/getOnlineUsers')
-        if (data) {
-            console.log('users',data.data);
-            this.onlineUsers=data.data;
-           // return data;
-         }
-    },
+    
      sendMessage(){
-      console.log('this.message',this.message);
+
       this.message.type='chat';
-      this.message.user=this.$socket.id;
+      this.message.user=this.$store.state.userName;
       this.message.timeStamp="Today";
       this.$socket.emit('chat.message',this.message);
 
-       this.message.type='';
+      this.message.type='';
       this.message.user='';
       this.message.timeStamp="";
-
-      var msgBody={
-        message:this.message,
-        senderId:'',
-        receiverId:''
-      }
-    
-    
 
     },
     sendUserId:function(id){
@@ -104,7 +86,12 @@ export default {
       }
     },
     stoppedTyping:function(){
-
+         if(keycode == '13'){
+            var index=this.areTyping.indexOf(this.$socket.id);
+            if(index >=0){
+               this.areTyping.splice(index,1);
+            }
+         }
     }
   }
   }
