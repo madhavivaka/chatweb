@@ -79,7 +79,15 @@ export default {
       this.message.timeStamp="Today";
       this.message.receiver=this.receiverId;
       this.$socket.emit('chat.message',this.message);
+      axios.post('/api/saveMessage', {
+          message:this.message
+        })
+        .then(function (response) {
 
+        })
+        .catch(function (error) {
+          
+        });
       this.message.type='';
       this.message.user='';
       this.message.timeStamp="";
