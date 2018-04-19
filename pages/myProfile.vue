@@ -1,27 +1,472 @@
 <template>
-  <div class="login-wrapper border border-light" >
+ <form class="form-sendmsg" @submit.prevent="sendMessage()">
+  <div class="wrapper">
+    <div class="container">
+        <div class="left">
      
-
-    Welcome madhavi
-    <ul id="onlineUsers" >
-        <li v-for="user in onlineUsers" :key="user.id" >
-       <a @click="sendUserId(user._id)"> {{ user }} <span v-if="userIsTyping(user)" class="glyphicon glyphicon-pencil" >..</span></a> 
-        </li>
+         <div class="top">
+                <input type="text" />
+                <a href="javascript:;" class="search"></a>
+            </div>
+    
+    <ul id="onlineUsers" class="people">
+            <li class="person" data-chat="person" v-for="user in onlineUsers" :key="user.id" v-on:click="sendUserId(user.id)" >
+                    <span class="name">{{ user.username }} </span>
+                    <span class="time">2:09 PM</span>
+                      <span v-if="userIsTyping(user)" class="glyphicon glyphicon-pencil" >..</span>
+                    
+            </li>
+      
     </ul>
     
-    <ul class="" id="messages">
-    <li v-for="message in messages" :key="message.id"> {{message.user}} {{message.text}} </li>
-    </ul>
+   
     
     
-   <form class="form-sendmsg" @submit.prevent="sendMessage()">
-   <textarea  v-model="message.text" v-on:keyup="usersAreTyping" v-on:keyup.13="stoppedTyping('13')" type="text" id="message" class="form-control" placeholder="Type your message here" required autofocus />
-    <button class="btn btn-lg btn-primary btn-block" type="submit" >Send</button>
-    </form>
+  
   </div>
+   <div class="right">
+            <div class="top"><span>To: <span class="name">Dog Woofson</span></span></div>
+              <ul class="" id="messages">
+                   <li v-for="message in messages" :key="message.id"> {{message.user}} {{message.text}} </li>
+             </ul>
+            <div data-chat="person">
+                <div class="conversation-start">
+                    <span>Today, 6:48 AM</span>
+                </div>
+                <div class="bubble you">
+                    Hello,
+                </div>
+                <div class="bubble you">
+                    it's me.
+                </div>
+                <div class="bubble you">
+                    I was wondering...
+                </div>
+                 <div class="bubble me">
+                    I'm in California dreaming
+                </div>
+            </div>
+              <div class="write">
+                
+                
+                       <input  v-model="message.text" v-on:keyup="usersAreTyping" v-on:keyup.13="stoppedTyping('13')" type="text" id="message" class="form-control" placeholder="Type your message here" required autofocus />
+                      
+                      <button class="btn btn-lg btn-primary btn-block" type="submit" >Send</button>
+                  
+            </div>
+      </div>      
 
+  </div>
+  </div>
+</form>
 </template>
 
 <script src="../public/js/myProfile">
    
 </script>
+<style>
+  .wrapper {
+  position: relative;
+  left: 50%;
+  width: 1000px;
+  height: 800px;
+  -moz-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+}
+.container {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  height: 75%;
+  background-color: #fff;
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.container .left {
+  float: left;
+  width: 37.6%;
+  height: 100%;
+  border: 1px solid #e6e6e6;
+  background-color: #fff;
+}
+.container .left .top {
+  position: relative;
+  width: 100%;
+  height: 96px;
+  padding: 29px;
+}
+.container .left .top:after {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  display: block;
+  width: 80%;
+  height: 1px;
+  content: '';
+  background-color: #e6e6e6;
+  -moz-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+}
+.container .left input {
+  float: left;
+  width: 188px;
+  height: 42px;
+  padding: 0 15px;
+  border: 1px solid #e6e6e6;
+  background-color: #eceff1;
+  -moz-border-radius: 21px;
+  -webkit-border-radius: 21px;
+  border-radius: 21px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+}
+.container .left input:focus {
+  outline: none;
+}
+.container .left a.search {
+  display: block;
+  float: left;
+  width: 42px;
+  height: 42px;
+  margin-left: 10px;
+  border: 1px solid #e6e6e6;
+  background-color: #00b0ff;
+  background-image: url("http://s11.postimg.org/dpuahewmn/name_type.png");
+  background-repeat: no-repeat;
+  background-position: top 12px left 14px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+.container .left .people {
+  margin-left: -1px;
+  border-right: 1px solid #e6e6e6;
+  border-left: 1px solid #e6e6e6;
+  width: -moz-calc(100% + 2px);
+  width: -webkit-calc(100% + 2px);
+  width: -o-calc(100% + 2px);
+  width: calc(100% + 2px);
+}
+.container .left .people .person {
+  position: relative;
+  width: 100%;
+  padding: 12px 10% 16px;
+  cursor: pointer;
+  background-color: #fff;
+}
+.container .left .people .person:after {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  display: block;
+  width: 80%;
+  height: 1px;
+  content: '';
+  background-color: #e6e6e6;
+  -moz-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+}
+.container .left .people .person img {
+  float: left;
+  width: 40px;
+  height: 40px;
+  margin-right: 12px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+.container .left .people .person .name {
+  font-size: 14px;
+  line-height: 22px;
+  color: #1a1a1a;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+}
+.container .left .people .person .time {
+  font-size: 14px;
+  position: absolute;
+  top: 16px;
+  right: 10%;
+  padding: 0 0 5px 5px;
+  color: #999;
+  background-color: #fff;
+}
+.container .left .people .person .preview {
+  font-size: 14px;
+  display: inline-block;
+  overflow: hidden !important;
+  width: 70%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #999;
+}
+.container .left .people .person.active, .container .left .people .person:hover {
+  margin-top: -1px;
+  margin-left: -1px;
+  padding-top: 13px;
+  border: 0;
+  background-color: #00b0ff;
+  width: -moz-calc(100% + 2px);
+  width: -webkit-calc(100% + 2px);
+  width: -o-calc(100% + 2px);
+  width: calc(100% + 2px);
+  padding-left: -moz-calc(10% + 1px);
+  padding-left: -webkit-calc(10% + 1px);
+  padding-left: -o-calc(10% + 1px);
+  padding-left: calc(10% + 1px);
+}
+.container .left .people .person.active span, .container .left .people .person:hover span {
+  color: #fff;
+  background: transparent;
+}
+.container .left .people .person.active:after, .container .left .people .person:hover:after {
+  display: none;
+}
+.container .right {
+  position: relative;
+  float: left;
+  width: 62.4%;
+  height: 100%;
+}
+.container .right .top {
+  width: 100%;
+  height: 47px;
+  padding: 15px 29px;
+  background-color: #eceff1;
+}
+.container .right .top span {
+  font-size: 15px;
+  color: #999;
+}
+.container .right .top span .name {
+  color: #1a1a1a;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+}
+.container .right .chat {
+  position: relative;
+  display: none;
+  overflow: hidden;
+  padding: 0 35px 92px;
+  border-width: 1px 1px 1px 0;
+  border-style: solid;
+  border-color: #e6e6e6;
+  height: -moz-calc(100% - 48px);
+  height: -webkit-calc(100% - 48px);
+  height: -o-calc(100% - 48px);
+  height: calc(100% - 48px);
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+.container .right .chat.active-chat {
+  display: block;
+  display: -webkit-flex;
+  display: flex;
+}
+.container .right .chat.active-chat .bubble {
+  -moz-transition-timing-function: cubic-bezier(0.4, -0.04, 1, 1);
+  -o-transition-timing-function: cubic-bezier(0.4, -0.04, 1, 1);
+  -webkit-transition-timing-function: cubic-bezier(0.4, -0.04, 1, 1);
+  transition-timing-function: cubic-bezier(0.4, -0.04, 1, 1);
+}
+.container .right .chat.active-chat .bubble:nth-of-type(1) {
+  -moz-animation-duration: 0.15s;
+  -webkit-animation-duration: 0.15s;
+  animation-duration: 0.15s;
+}
+.container .right .chat.active-chat .bubble:nth-of-type(2) {
+  -moz-animation-duration: 0.3s;
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+}
+.container .right .chat.active-chat .bubble:nth-of-type(3) {
+  -moz-animation-duration: 0.45s;
+  -webkit-animation-duration: 0.45s;
+  animation-duration: 0.45s;
+}
+.container .right .chat.active-chat .bubble:nth-of-type(4) {
+  -moz-animation-duration: 0.6s;
+  -webkit-animation-duration: 0.6s;
+  animation-duration: 0.6s;
+}
+.container .right .chat.active-chat .bubble:nth-of-type(5) {
+  -moz-animation-duration: 0.75s;
+  -webkit-animation-duration: 0.75s;
+  animation-duration: 0.75s;
+}
+.container .right .chat.active-chat .bubble:nth-of-type(6) {
+  -moz-animation-duration: 0.9s;
+  -webkit-animation-duration: 0.9s;
+  animation-duration: 0.9s;
+}
+.container .right .chat.active-chat .bubble:nth-of-type(7) {
+  -moz-animation-duration: 1.05s;
+  -webkit-animation-duration: 1.05s;
+  animation-duration: 1.05s;
+}
+.container .right .chat.active-chat .bubble:nth-of-type(8) {
+  -moz-animation-duration: 1.2s;
+  -webkit-animation-duration: 1.2s;
+  animation-duration: 1.2s;
+}
+.container .right .chat.active-chat .bubble:nth-of-type(9) {
+  -moz-animation-duration: 1.35s;
+  -webkit-animation-duration: 1.35s;
+  animation-duration: 1.35s;
+}
+.container .right .chat.active-chat .bubble:nth-of-type(10) {
+  -moz-animation-duration: 1.5s;
+  -webkit-animation-duration: 1.5s;
+  animation-duration: 1.5s;
+}
+.container .right .write {
+  position: absolute;
+  bottom: 29px;
+  left: 30px;
+  height: 42px;
+  padding-left: 8px;
+  border: 1px solid #e6e6e6;
+  background-color: #eceff1;
+  width: -moz-calc(100% - 58px);
+  width: -webkit-calc(100% - 58px);
+  width: -o-calc(100% - 58px);
+  width: calc(100% - 58px);
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.container .right .write input {
+  font-size: 16px;
+  float: left;
+  width: 347px;
+  height: 40px;
+  padding: 0 10px;
+  color: #1a1a1a;
+  border: 0;
+  outline: none;
+  background-color: #eceff1;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+}
+.container .right .write .write-link.attach:before {
+  display: inline-block;
+  float: left;
+  width: 20px;
+  height: 42px;
+  content: '';
+  background-image: url("http://s1.postimg.org/s5gfy283f/attachemnt.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.container .right .write .write-link.smiley:before {
+  display: inline-block;
+  float: left;
+  width: 20px;
+  height: 42px;
+  content: '';
+  background-image: url("http://s14.postimg.org/q2ug83h7h/smiley.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.container .right .write .write-link.send:before {
+  display: inline-block;
+  float: left;
+  width: 20px;
+  height: 42px;
+  margin-left: 11px;
+  content: '';
+  background-image: url("http://s30.postimg.org/nz9dho0pp/send.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.container .right .bubble {
+  font-size: 16px;
+  position: relative;
+  display: inline-block;
+  clear: both;
+  margin-bottom: 8px;
+  padding: 13px 14px;
+  vertical-align: top;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.container .right .bubble:before {
+  position: absolute;
+  top: 19px;
+  display: block;
+  width: 8px;
+  height: 6px;
+  content: '\00a0';
+  -moz-transform: rotate(29deg) skew(-35deg);
+  -ms-transform: rotate(29deg) skew(-35deg);
+  -webkit-transform: rotate(29deg) skew(-35deg);
+  transform: rotate(29deg) skew(-35deg);
+}
+.container .right .bubble.you {
+  float: left;
+  color: #fff;
+  background-color: #00b0ff;
+  -webkit-align-self: flex-start;
+  align-self: flex-start;
+  -moz-animation-name: slideFromLeft;
+  -webkit-animation-name: slideFromLeft;
+  animation-name: slideFromLeft;
+}
+.container .right .bubble.you:before {
+  left: -3px;
+  background-color: #00b0ff;
+}
+.container .right .bubble.me {
+  float: right;
+  color: #1a1a1a;
+  background-color: #eceff1;
+  -webkit-align-self: flex-end;
+  align-self: flex-end;
+  -moz-animation-name: slideFromRight;
+  -webkit-animation-name: slideFromRight;
+  animation-name: slideFromRight;
+}
+.container .right .bubble.me:before {
+  right: -3px;
+  background-color: #eceff1;
+}
+.container .right .conversation-start {
+  position: relative;
+  width: 100%;
+  margin-bottom: 27px;
+  text-align: center;
+}
+.container .right .conversation-start span {
+  font-size: 14px;
+  display: inline-block;
+  color: #999;
+}
+.container .right .conversation-start span:before, .container .right .conversation-start span:after {
+  position: absolute;
+  top: 10px;
+  display: inline-block;
+  width: 30%;
+  height: 1px;
+  content: '';
+  background-color: #e6e6e6;
+}
+.container .right .conversation-start span:before {
+  left: 0;
+}
+.container .right .conversation-start span:after {
+  right: 0;
+}
+
+</style>
