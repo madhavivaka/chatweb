@@ -26,22 +26,15 @@
   </div>
    <div class="right">
             <div class="top"><span>To: <span class="name">Dog Woofson</span></span></div>
-              <ul class="" id="messages">
-                   <li v-for="message in messages" :key="message.id"> {{message.user}} {{message.text}} </li>
-             </ul>
+              
             <div data-chat="person">
-                <div class="conversation-start">
+                <div class="conversation-start" >
                     <span>Today, 6:48 AM</span>
                 </div>
-                <div class="bubble you">
-                    Hello,
+                <div class="bubble you" v-for="message in messages" :key="message.id">
+                    {{message.text}}
                 </div>
-                <div class="bubble you">
-                    it's me.
-                </div>
-                <div class="bubble you">
-                    I was wondering...
-                </div>
+                
                  <div class="bubble me">
                     I'm in California dreaming
                 </div>
