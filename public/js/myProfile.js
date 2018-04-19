@@ -14,10 +14,12 @@ export default {
       action:'',
       user:'',
       text:'',
-      timeStamp:''
+      timeStamp:'',
+      receiver:''
      },
      messages:[],
-     areTyping:[]
+     areTyping:[],
+     receiverId:''
     }
   },
   created: function(){
@@ -27,27 +29,41 @@ export default {
 
             if(this.onlineUsers[user.username] == undefined){
                console.log('inside if');
-               this.onlineUsers.push(user.username);
+               //this.onlineUsers[user.id]=user.username;
+               var u={
+                 username:user.username,
+                 id:user.id
+               }
+               this.onlineUsers.push(u);
             }
          
-      
+          console.log('this.onlineUsers',this.onlineUsers);
        }.bind(this));
 
 
        //if server emits 'chat.message', update messages array
-       this.$socket.on('chat.message',function(message){
-        console.log('server sends message');
-          this.messages.push(message);
+       this.$socket.on('chat.message',function(data){
+        console.log('server sends message',data);
+          this.messages.push(data.message);
        }.bind(this));
+
+
 
        //if server broadcasts user left, remove leaving user from online users
        this.$socket.on('user left',function(user){
         console.log('user left client',user);
-         console.log('this.onlineusers',this.onlineUsers);
-           var index=this.onlineUsers.indexOf(user.username);
-           if(index >= 0){
-              this.onlineUsers.splice(index,1);
-           }
+        
+          for(var u in this.onlineUsers){
+           
+             if(this.onlineUsers[u].username === user.username){
+              console.log('inside if');
+                    //delete this.onlineUsers[u];
+                    this.onlineUsers.splice(u,1);
+             }
+                 
+          }
+           console.log('this.onlineusers',this.onlineUsers);
+           
        }.bind(this));
 
         this.$socket.on('user typing',function(username){
@@ -61,6 +77,7 @@ export default {
       this.message.type='chat';
       this.message.user=this.$store.state.userName;
       this.message.timeStamp="Today";
+      this.message.receiver=this.receiverId;
       this.$socket.emit('chat.message',this.message);
 
       this.message.type='';
@@ -69,7 +86,8 @@ export default {
 
     },
     sendUserId:function(id){
-      console.log('*8888888888888888',id);
+      console.log('*receiverId',id);
+       this.receiverId=id;
     },
     userIsTyping:function(username){
       if(this.areTyping.indexOf(username)){
@@ -85,7 +103,7 @@ export default {
         this.$socket.emit('user typing',this.$socket.id);
       }
     },
-    stoppedTyping:function(){
+    stoppedTyping:function(keycode){
          if(keycode == '13'){
             var index=this.areTyping.indexOf(this.$socket.id);
             if(index >=0){
