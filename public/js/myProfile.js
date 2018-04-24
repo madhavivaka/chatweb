@@ -15,7 +15,8 @@ export default {
       user:'',
       text:'',
       timeStamp:'',
-      receiver:''
+      receiver:'',
+      owner_user:''
      },
      messages:[],
      areTyping:[],
@@ -78,8 +79,9 @@ export default {
       this.message.user=this.$store.state.userName;
       this.message.timeStamp="Today";
       this.message.receiver=this.receiverId;
+      this.message.owner_user=this.$store.state.userToken;
       this.$socket.emit('chat.message',this.message);
-      axios.post('/api/saveMessage', {
+      this.$axios.post('/api/saveMessage', {
           message:this.message
         })
         .then(function (response) {
