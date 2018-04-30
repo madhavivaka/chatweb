@@ -20,7 +20,8 @@ export default {
      },
      messages:[],
      areTyping:[],
-     receiverId:''
+     receiverId:'',
+     recentMessages:[]
     }
   },
   created: function(){
@@ -35,7 +36,7 @@ export default {
                  username:user.username,
                  id:user.id
                }
-               this.onlineUsers.push(u);
+             //  this.onlineUsers.push(u);
             }
          
           console.log('this.onlineUsers',this.onlineUsers);
@@ -59,10 +60,15 @@ export default {
              if(this.onlineUsers[u].username === user.username){
               console.log('inside if');
                     //delete this.onlineUsers[u];
-                    this.onlineUsers.splice(u,1);
+                 //   this.onlineUsers.splice(u,1);
              }
                  
           }
+           console.log('this.onlineusers',this.onlineUsers);
+           
+       }.bind(this));
+      this.$socket.on('availableusers',function(availableusers){
+          this.onlineUsers=availableusers;
            console.log('this.onlineusers',this.onlineUsers);
            
        }.bind(this));
@@ -70,7 +76,7 @@ export default {
         this.$socket.on('user typing',function(username){
            this.areTyping.push(username);
         }.bind(this));
-  },
+      },
   methods: {
     
      sendMessage(){
@@ -98,6 +104,21 @@ export default {
     sendUserId:function(id){
       console.log('*receiverId',id);
        this.receiverId=id;
+       var uniqueId=this.$store.state.userToken+"_"+id;
+       
+         this.$axios.post('/api/getRecentMessages', {
+          uniqueId:uniqueId
+        })
+        .then(function (response) {
+            console.log('this.recentMessages',response.data.response);
+            this.recentMessages=response.response.messages;
+
+        })
+        .catch(function (error) {
+          
+        });        
+
+
     },
     userIsTyping:function(username){
       if(this.areTyping.indexOf(username)){
@@ -121,6 +142,7 @@ export default {
             }
          }
     }
+
   }
   }
   
